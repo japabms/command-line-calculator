@@ -7,6 +7,8 @@ fn main() {
         io::stdin().read_line(&mut input).expect("deu merda");
         if input.contains("exit") {
             break;
+        } else if input.contains("clear") {
+            print!("\x1B[2J\x1B[1;1H");
         }
         print!("\n");
 
@@ -23,6 +25,9 @@ fn calculate_basic(nums: Vec<f64>, op: String) -> f64 {
     let mut result = 0.0;
     let op_len = op.len();
     let n_len = nums.len();
+    let mut f_is_div: bool = false;
+    let mut f_is_mut: bool = false;
+    println!("{:?}", nums);
 
     if !op.contains('*') && !op.contains('/') {
         for i in 0..op_len {
@@ -44,11 +49,19 @@ fn calculate_basic(nums: Vec<f64>, op: String) -> f64 {
         }
     } else {
         for i in 0..op_len {
-            if op.chars().nth(i).unwrap() == '*' {
+            if op.chars().nth(i).unwrap() == '*' && f_is_div == false {
                 result += nums.get(i).unwrap() * nums.get(i + 1).unwrap();
-            } else if op.chars().nth(i).unwrap() == '/' {
+                f_is_mut = true;
+            } else if op.chars().nth(i).unwrap() == '/' && f_is_mut == false {
                 result += nums.get(i).unwrap() / nums.get(i + 1).unwrap();
-            } else if op.chars().nth(i).unwrap() != '*' && op.chars().nth(i).unwrap() != '/' {
+                f_is_div = true;
+            } else if op.chars().nth(i).unwrap() != '*' && f_is_mut {
+                if op.chars().nth(i).unwrap() == '/' && i == op_len - 1 {
+                    result /= nums.get(i + 1).unwrap();
+                } else if op.chars().nth(i).unwrap() == '/' {
+                    result /= nums.get(i).unwrap();
+                }
+
                 if op.chars().nth(i).unwrap() == '+' && i == op_len - 1 {
                     result += nums.get(i + 1).unwrap();
                 } else if op.chars().nth(i).unwrap() == '+' {
@@ -60,28 +73,15 @@ fn calculate_basic(nums: Vec<f64>, op: String) -> f64 {
                 } else if op.chars().nth(i).unwrap() == '-' {
                     result -= nums.get(i).unwrap();
                 }
+            } else if f_is_div {
+                if op.chars().nth(i).unwrap() == '*' && i == op_len - 1 {
+                    result *= nums.get(i + 1).unwrap();
+                } else if op.chars().nth(i).unwrap() == '*' {
+                    result *= nums.get(i).unwrap();
+                }
             }
         }
     }
-
-    /* let (mut a, mut b, mut c, mut d) = porra(op); */
-    // println!("{}{}{}{}  {}", a, b, c, d, op_len);
-
-    // for n in 2..n_len {
-    //     // if c != 0 {
-    //     //     result /= nums.get(n).unwrap();
-    //     //     c -= 1;
-    //     // } else if d != 0 {
-    //     //     result *= nums.get(n).unwrap();
-    //     //     d -= 1;
-    //     if a != 0 {
-    //         result += nums.get(n).unwrap();
-    //         a -= 1;
-    //     } else if b != 0 {
-    //         result -= nums.get(n).unwrap();
-    //         b -= 1;
-    //     }
-    // }
 
     result
 }
@@ -115,20 +115,3 @@ fn get_operators(input: &String) -> String {
 
     op_result
 }
-
-// fn porra(mut op: String) -> (usize, usize, usize, usize) {
-//     let (mut a, mut b, mut c, mut d) = (0, 0, 0, 0);
-//     op.remove(0);
-
-//     for ch in op.chars() {
-//         match ch {
-//             '+' => a += 1,
-//             '-' => b += 1,
-//             '/' => c += 1,
-//             '*' => d += 1,
-//             _ => (),
-//         }
-//     }
-
-//     (a, b, c, d)
-// }
