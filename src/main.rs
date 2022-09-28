@@ -46,7 +46,9 @@ fn calculate_basic(nums: Vec<f64>, op: String) -> f64 {
         for i in 0..op_len {
             if op.chars().nth(i).unwrap() == '*' {
                 result += nums.get(i).unwrap() * nums.get(i + 1).unwrap();
-            } else if op.chars().nth(i).unwrap() != '*' {
+            } else if op.chars().nth(i).unwrap() == '/' {
+                result += nums.get(i).unwrap() / nums.get(i + 1).unwrap();
+            } else if op.chars().nth(i).unwrap() != '*' && op.chars().nth(i).unwrap() != '/' {
                 if op.chars().nth(i).unwrap() == '+' && i == op_len - 1 {
                     result += nums.get(i + 1).unwrap();
                 } else if op.chars().nth(i).unwrap() == '+' {
@@ -57,12 +59,6 @@ fn calculate_basic(nums: Vec<f64>, op: String) -> f64 {
                     result -= nums.get(i + 1).unwrap();
                 } else if op.chars().nth(i).unwrap() == '-' {
                     result -= nums.get(i).unwrap();
-                }
-
-                if op.chars().nth(i).unwrap() == '/' && i == op_len - 1 {
-                    result /= nums.get(i + 1).unwrap();
-                } else if op.chars().nth(i).unwrap() == '/' {
-                    result /= nums.get(i).unwrap();
                 }
             }
         }
