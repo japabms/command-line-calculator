@@ -75,7 +75,10 @@ fn calculate_basic(nums: Vec<f64>, op: String) -> f64 {
                 }
             } else if f_is_div {
                 if op.chars().nth(i).unwrap() == '*' && i == op_len - 1 {
-                    result *= nums.get(i + 1).unwrap();
+                    if op.chars().nth(i + 1).unwrap() == '/' {
+                    } else {
+                        result *= nums.get(i + 1).unwrap();
+                    }
                 } else if op.chars().nth(i).unwrap() == '*' {
                     result *= nums.get(i).unwrap();
                 }
@@ -103,12 +106,12 @@ fn get_numbers(input: &String) -> Vec<f64> {
 fn get_operators(input: &String) -> String {
     let mut op_result = String::new();
 
-    for ch in input.chars() {
+    for ch in input.split_whitespace() {
         match ch {
-            '+' => op_result.push('+'),
-            '-' => op_result.push('-'),
-            '/' => op_result.push('/'),
-            '*' => op_result.push('*'),
+            "+" => op_result.push('+'),
+            "-" => op_result.push('-'),
+            "/" => op_result.push('/'),
+            "*" => op_result.push('*'),
             _ => (),
         }
     }
