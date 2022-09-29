@@ -1,7 +1,10 @@
 # Command Line Calculator 
 Calculadora bem SIMPLES, que nem funciona direito.
 
-## Como usar
-Basta ter o cargo , dar git clone no repositioria e usar cargo run.
+Tava sem nada pra fazer e comecei a fazer isso aqui, baseado em nada, só digitei e deu nisso ai.
 
-:cold_face:
+
+### Como usar:
+  > Instale o cargo
+  > Baixa o repositorio
+  > Usa o comando "cargo run" no seu cli, dentro do diretório do repositorio.
