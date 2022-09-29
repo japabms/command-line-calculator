@@ -3,19 +3,29 @@ use std::io;
 fn main() {
     let mut input = String::new();
     println!("Separe a expressão com espaços.\n Exemplo: 10 + 2 * 3\n");
+    println!("Use *clear* para limpar a tela e *exit* para sair do programa.");
     loop {
         io::stdin().read_line(&mut input).expect("deu merda");
-        if input.contains("exit") {
+        if input.starts_with('\n') {
+            println!("Insira uma expressão ;)");
+        } else if input.contains("exit") {
             break;
         } else if input.contains("clear") {
             print!("\x1B[2J\x1B[1;1H");
+        } else if !input.contains('+')
+            && !input.contains('*')
+            && !input.contains('-')
+            && !input.contains('/')
+        {
+            println!("Insira uma expressão valida ;)");
+        } else {
+            println!(
+                "Result: {}\n",
+                calculate_basic(get_numbers(&input), get_operators(&input))
+            );
         }
         print!("\n");
 
-        println!(
-            "Result: {}\n",
-            calculate_basic(get_numbers(&input), get_operators(&input))
-        );
         input = String::from("");
     }
 }
@@ -27,7 +37,6 @@ fn calculate_basic(nums: Vec<f64>, op: String) -> f64 {
     let n_len = nums.len();
     let mut f_is_div: bool = false;
     let mut f_is_mut: bool = false;
-    println!("{:?}", nums);
 
     if !op.contains('*') && !op.contains('/') {
         for i in 0..op_len {
